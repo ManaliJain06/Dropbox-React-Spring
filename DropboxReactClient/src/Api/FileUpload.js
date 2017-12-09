@@ -115,11 +115,10 @@ export const createDirectory = (payload) => {
         });
 };
 
-export const getFiles = () => {
-    const token = sessionStorage.jwtToken;
-    return axios.get('http://localhost:8080/files/getFiles', {
-        headers: { 'authorization': token }
-        }
+export const getFiles = (user_uuid) => {
+    console.log("user_uuid is", user_uuid);
+    // const token = sessionStorage.jwtToken;
+    return axios.get(`http://localhost:8080/files/getFiles/${user_uuid}`
     )
         .then(function (response) {
             console.log(response);

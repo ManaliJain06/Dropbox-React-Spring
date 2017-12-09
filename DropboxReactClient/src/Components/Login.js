@@ -30,14 +30,14 @@ class Login extends Component{
                 .then((res) => {
                  console.log("login res is ", res);
                     if (res.data.statusCode === 201) {
+                        this.props.loginData(res.data.payload);
                         this.setState({
                             isLoggedIn: true,
                             message: res.data.message
                         });
-                        const token = res.data.token;
-                        sessionStorage.setItem('jwtToken',token);
+                        // const token = res.data.token;
+                        // sessionStorage.setItem('jwtToken',token);
                         this.props.loginState(res.data.isLogged);
-                        this.props.loginData(res.data.payload);
                     } else if (res.data.statusCode === 500) {
                         this.setState({
                             isLoggedIn: false,

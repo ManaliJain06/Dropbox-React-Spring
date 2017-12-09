@@ -29,9 +29,11 @@ class Home extends Component{
     };
 
     componentDidMount() {
-        API.getFiles()
+        let loginData = this.props.loginDataProp;
+        API.getFiles(loginData.user_uuid)
             .then((res) => {
                 if (res.data.statusCode === 201) {
+                    console.log("files are", res);
                     this.setState({
                         message: res.data.message,
                         files: res.data.files
