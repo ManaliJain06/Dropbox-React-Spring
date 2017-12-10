@@ -5,6 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 @Document
 public class Files {
@@ -13,20 +15,12 @@ public class Files {
     private String _id;
     private String[] user_uuid;
     private String dir_name;
-    private String dir_uuid;
+    private UUID dir_uuid;
     private String dir_created;
     private String star_id;
     private String owner_uuid;
+    private List<filesArray> filesArray;
 
-    public String[] getFilesArray() {
-        return filesArray;
-    }
-
-    public void setFilesArray(String[] filesArray) {
-        this.filesArray = filesArray;
-    }
-
-    private String[] filesArray;
 
     @Override
     public String toString() {
@@ -38,8 +32,16 @@ public class Files {
                 ", dir_created='" + dir_created + '\'' +
                 ", star_id='" + star_id + '\'' +
                 ", owner_uuid='" + owner_uuid + '\'' +
-                ", filesArray=" + Arrays.toString(filesArray) +
+                ", filesArray=" + filesArray +
                 '}';
+    }
+
+    public List<com.dropbox.DropboxSpringMongoDB.document.filesArray> getFilesArray() {
+        return filesArray;
+    }
+
+    public void setFilesArray(List<com.dropbox.DropboxSpringMongoDB.document.filesArray> filesArray) {
+        this.filesArray = filesArray;
     }
 
     public String get_id() {
@@ -66,11 +68,11 @@ public class Files {
         this.dir_name = dir_name;
     }
 
-    public String getDir_uuid() {
+    public UUID getDir_uuid() {
         return dir_uuid;
     }
 
-    public void setDir_uuid(String dir_uuid) {
+    public void setDir_uuid(UUID dir_uuid) {
         this.dir_uuid = dir_uuid;
     }
 
@@ -98,11 +100,5 @@ public class Files {
         this.owner_uuid = owner_uuid;
     }
 
-//    public JSON[] getFilesArray() {
-//        return filesArray;
-//    }
 
-//    public void setFilesArray(JSON[] filesArray) {
-//        this.filesArray = filesArray;
-//    }
 }

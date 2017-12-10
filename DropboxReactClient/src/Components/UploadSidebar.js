@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import * as API from '../Api/FileUpload';
 import {connect} from 'react-redux';
 import {userMenu, loginState} from '../Actions/index';
+const axios = require("axios");
 
 class UploadSidebar extends Component{
     constructor(props) {
@@ -45,19 +46,30 @@ class UploadSidebar extends Component{
     // }
 
     handleFileUpload = (event) => {
-        const payload = new FormData();
+        let payload = new FormData();
         let loginData = this.props.loginDataProp;
         payload.append('file', event.target.files[0]);
         payload.append('user_uuid', loginData.user_uuid);
 
-        API.uploadFile(payload)
+        return axios.post('http://localhost:8080/files/uploadFile', payload)
             .then((res) => {
                 if (res.status === 201) {
                     this.props.callHome('home');
-                } else if(res.status === 500){
-                    alert("Error in file upload");
+                } else if(res.status === 400){
+                    alert("Error in file upload"+ res.data.message);
                 }
-            });
+            })
+            .catch((error) => {
+            console.log("error");
+        })
+        // API.uploadFile(payload)
+        //     .then((res) => {
+        //         if (res.status === 201) {
+        //             this.props.callHome('home');
+        //         } else if(res.status === 500){
+        //             alert("Error in file upload");
+        //         }
+        //     });
     };
 
     render() {

@@ -19,7 +19,7 @@ const axios = require("axios");
 
 export const uploadFile = (payload) => {
     const token = sessionStorage.jwtToken;
-    return fetch(`http://localhost:3003/files`, {
+    return fetch('http://localhost:3003/files', {
         method: 'POST',
         headers: { 'authorization': token },
         body: payload
@@ -98,12 +98,9 @@ export const uploadInGroup = (payload) => {
 };
 
 export const createDirectory = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    console.log("recahde");
-    return axios.post('http://localhost:3003/createDirectory', payload, {
-        headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    return axios.post('http://localhost:8080/files/createDir', payload
     )
         .then(function (response) {
             console.log(response);

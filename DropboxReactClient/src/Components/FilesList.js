@@ -1,6 +1,7 @@
 /**
  * Created by ManaliJain on 10/10/17.
  */
+
 import React, {Component} from 'react';
 import FilesInDir from './FilesInDir';
 import * as API from '../Api/FileOperations';
@@ -9,6 +10,7 @@ import {loginData,loginState} from '../Actions/index';
 import {connect} from 'react-redux';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
+const axios = require("axios");
 
 const customStyles = {
     content : {
@@ -190,30 +192,41 @@ class FilesList extends Component{
 
     uploadFileInFolder = (event) => {
         const file = this.props.file;
-        const payload = new FormData();
+        let payload = new FormData();
         payload.append('file', event.target.files[0]);
         payload.append('user_uuid', this.state.user_uuid);
         payload.append('dir_name', file.dir_name);
         payload.append('dir_uuid', file.dir_uuid);
-        payload.append('_id', file._id);
+        // payload.append('_id', file._id);
         payload.forEach(function(d){
             console.log(d)
         })
-        api.uploadFileGroup(payload)
+        // api.uploadFileGroup(payload)
+        //     .then((res) => {
+        //         if (res.status === 201) {
+        //             const file = this.props.file;
+        //             this.setState({
+        //                 ...this.state,
+        //                 "_id": file._id,
+        //                 "file_uuid": res.data.file_uuid,
+        //                 "dir_name": file.dir_name,
+        //                 "dir_uuid": file.dir_uuid,
+        //             }, this.callUploadInDirAPI);
+        //         } else {
+        //             alert("Error in file upload");
+        //         }
+        //     });
+        return axios.post('http://localhost:8080/files/uploadFileInDir', payload)
             .then((res) => {
                 if (res.status === 201) {
-                    const file = this.props.file;
-                    this.setState({
-                        ...this.state,
-                        "_id": file._id,
-                        "file_uuid": res.data.file_uuid,
-                        "dir_name": file.dir_name,
-                        "dir_uuid": file.dir_uuid,
-                    }, this.callUploadInDirAPI);
-                } else {
-                    alert("Error in file upload");
+                    // this.props.callHome('home');
+                } else if(res.status === 400){
+                    alert("Error in file upload"+ res.data.message);
                 }
-            });
+            })
+            .catch((error) => {
+                console.log("error");
+            })
     };
     callUploadInDirAPI = () => {
         api.uploadInDir(this.state)

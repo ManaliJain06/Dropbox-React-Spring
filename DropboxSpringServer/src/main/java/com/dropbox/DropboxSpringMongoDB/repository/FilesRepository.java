@@ -1,6 +1,10 @@
 package com.dropbox.DropboxSpringMongoDB.repository;
 
 import com.dropbox.DropboxSpringMongoDB.document.Files;
+import com.dropbox.DropboxSpringMongoDB.document.filesArray;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -22,4 +26,12 @@ public interface FilesRepository extends MongoRepository<Files, String>{
 
     @Query(value = "{'user_uuid': ?0}.toArray()")
     List<Files> findAnyOfTheseValues(String user_uuid);
+
+    @Query(value = "{'dir_uuid' : ?0},{$put:{'filesArray': ?1 }}")
+    Files findAndInsert(String dir_uuid, filesArray file);
+
+    Files save(Files file);
+
+
+
 }
