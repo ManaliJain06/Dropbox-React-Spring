@@ -2,7 +2,8 @@ package com.dropbox.DropboxSpringMongoDB.controller;
 
 import com.dropbox.DropboxSpringMongoDB.document.Files;
 import com.dropbox.DropboxSpringMongoDB.service.FilesService;
-import com.mongodb.util.JSON;
+import com.dropbox.DropboxSpringMongoDB.service.UserService;
+import com.dropbox.DropboxSpringMongoDB.document.User;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,21 +21,19 @@ import java.util.List;
 public class FilesController {
 
     private FilesService filesService;
+    private UserService userService;
 
     @Autowired
-    FilesController(FilesService filesService){
+    FilesController(FilesService filesService, UserService userService){
         this.filesService = filesService;
+        this.userService = userService;
     }
+
 
     @GetMapping(path="/getFiles/{user_uuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> getFiles(@PathVariable String user_uuid){
         System.out.println("user_uuid is " + user_uuid);
-        JSONObject response = new JSONObject();
         List<Files> files= filesService.getFiles(user_uuid);
-//        response.put("message","Valid user");
-//        response.put("statusCode",201);
-//        response.put("isLogged", true);
-//        response.put("files", files);
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
@@ -96,6 +95,13 @@ public class FilesController {
         }
     }
 
+    @GetMapping(path="/getLinks/{user_uuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> getLinks(@PathVariable String user_uuid){
+        System.out.println("user_uuid is " + user_uuid);
+//        List<Files> files= filesService.getLinks(user_uuid);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping(path="/deleteFileAndDir", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> deleteFileOrDir(@RequestBody String payload){
         JSONObject json = new JSONObject(payload);
@@ -107,6 +113,55 @@ public class FilesController {
         response.put("isLogged", true);
         return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 
+    }
+
+    @PostMapping(path="/shareFileOrDir", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> shareFileOrDir(@RequestBody String payload){
+        JSONObject json = new JSONObject(payload);
+        JSONObject response = new JSONObject();
+        User user = userService.checkUser(json.getString("shareToEmail"));
+        if(user == null){
+            response.put("statusCode",300);
+            response.put("message", "User is not available in Dropbox");
+            return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
+        }
+        else {
+            String msg = filesService.shareFileOrDirectory(json.getString("_id"),
+                    user.getUser_uuid().toString());
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(path="/starFileOrDir", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> starFileOrDir(@RequestBody String payload){
+        JSONObject json = new JSONObject(payload);
+        JSONObject response = new JSONObject();
+        String msg = filesService.StarFilesOrDir(json.getString("_id"));
+        if(msg.equals("starred")){
+            response.put("statusCode",201);
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        } else{
+            response.put("statusCode",400);
+            response.put("message", "Error Occured");
+            return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @PostMapping(path="/deleteFileFromDir", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> deleteFileFromDir(@RequestBody String payload){
+        JSONObject json = new JSONObject(payload);
+        JSONObject response = new JSONObject();
+        String msg = filesService.deleteFileFromDir(json.getString("_id"),
+                json.getString("file_uuid"));
+        if(msg.equals("deleted")){
+            response.put("statusCode",201);
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        } else{
+            response.put("statusCode",400);
+            response.put("message", "Error Occured");
+            return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

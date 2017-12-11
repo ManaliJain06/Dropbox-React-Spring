@@ -19,7 +19,7 @@ class Link extends Component{
         }
     }
     componentDidMount() {
-        API.getLinks()
+        API.getLinks(this.state)
             .then((res) => {
                 if (res.data.statusCode === 201) {
                     this.setState({

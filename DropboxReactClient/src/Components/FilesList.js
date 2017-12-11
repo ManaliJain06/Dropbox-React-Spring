@@ -121,30 +121,30 @@ class FilesList extends Component{
 
     }
     callAPIForShareLink =(payload) => {
-        API.shareLink(payload)
-            .then((res) => {
-                if (res.data.statusCode === 201) {
-                    this.closeModalShareLink();
-                    // this.props.callHome('home');
-                } else if (res.data.statusCode === 500) {
-                    this.setState({
-                        messageForShareLink: res.data.message
-                    });
-                    this.closeModalShareLink();
-                } else if(res.data.statusCode === 300) {
-                    this.setState({
-                        messageForShareLink: res.data.message,
-                        email : ''
-                    });
-                } else if (res.data.statusCode === 601  || res.data.statusCode === 600) {
-                    alert("Token expired or invalid. Please login again");
-                    this.setState({
-                        message: res.data.message
-                    });
-                    sessionStorage.removeItem("jwtToken");
-                    this.props.loginState(false);
-                }
-            });
+        // API.shareLink(payload)
+        //     .then((res) => {
+        //         if (res.data.statusCode === 201) {
+        //             this.closeModalShareLink();
+        //             // this.props.callHome('home');
+        //         } else if (res.data.statusCode === 500) {
+        //             this.setState({
+        //                 messageForShareLink: res.data.message
+        //             });
+        //             this.closeModalShareLink();
+        //         } else if(res.data.statusCode === 300) {
+        //             this.setState({
+        //                 messageForShareLink: res.data.message,
+        //                 email : ''
+        //             });
+        //         } else if (res.data.statusCode === 601  || res.data.statusCode === 600) {
+        //             alert("Token expired or invalid. Please login again");
+        //             this.setState({
+        //                 message: res.data.message
+        //             });
+        //             sessionStorage.removeItem("jwtToken");
+        //             this.props.loginState(false);
+        //         }
+        //     });
     }
 
     handleShareFile = () =>{
@@ -228,29 +228,29 @@ class FilesList extends Component{
                 console.log("error");
             })
     };
-    callUploadInDirAPI = () => {
-        api.uploadInDir(this.state)
-            .then((res) => {
-                if (res.data.statusCode === 201) {
-                    this.props.callHome('home');
-                } else if (res.data.statusCode === 500) {
-                    this.setState({
-                        message: res.data.message
-                    });
-                } else if (res.data.statusCode === 300) {
-                    this.setState({
-                        message: res.data.message
-                    });
-                }else if (res.data.statusCode === 601  || res.data.statusCode === 600) {
-                    alert("Token expired or invalid. Please login again");
-                    this.setState({
-                        message: res.data.message
-                    });
-                    sessionStorage.removeItem("jwtToken");
-                    this.props.loginState(false);
-                }
-            });
-    }
+    // callUploadInDirAPI = () => {
+    //     api.uploadInDir(this.state)
+    //         .then((res) => {
+    //             if (res.data.statusCode === 201) {
+    //                 this.props.callHome('home');
+    //             } else if (res.data.statusCode === 500) {
+    //                 this.setState({
+    //                     message: res.data.message
+    //                 });
+    //             } else if (res.data.statusCode === 300) {
+    //                 this.setState({
+    //                     message: res.data.message
+    //                 });
+    //             }else if (res.data.statusCode === 601  || res.data.statusCode === 600) {
+    //                 alert("Token expired or invalid. Please login again");
+    //                 this.setState({
+    //                     message: res.data.message
+    //                 });
+    //                 sessionStorage.removeItem("jwtToken");
+    //                 this.props.loginState(false);
+    //             }
+    //         });
+    // }
     handleDeleteFile = () => {
         const file = this.props.file;
         var payload = {

@@ -12,7 +12,7 @@ public class Files {
 
     @Id
     private String _id;
-    private String[] user_uuid;
+    private List<String> user_uuid;
     private String dir_name;
     private UUID dir_uuid;
     private String dir_created;
@@ -25,7 +25,7 @@ public class Files {
     public String toString() {
         return "Files{" +
                 "_id='" + _id + '\'' +
-                ", user_uuid=" + Arrays.toString(user_uuid) +
+                ", user_uuid=" + user_uuid +
                 ", dir_name='" + dir_name + '\'' +
                 ", dir_uuid='" + dir_uuid + '\'' +
                 ", dir_created='" + dir_created + '\'' +
@@ -51,11 +51,11 @@ public class Files {
         this._id = _id;
     }
 
-    public String[] getUser_uuid() {
+    public List<String> getUser_uuid() {
         return user_uuid;
     }
 
-    public void setUser_uuid(String[] user_uuid) {
+    public void setUser_uuid(List<String> user_uuid) {
         this.user_uuid = user_uuid;
     }
 

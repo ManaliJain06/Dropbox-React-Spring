@@ -100,4 +100,55 @@ public class GroupsService {
         groupsRepository.deleteBy_id(_id);
         return "deleted";
     }
+
+    public String deleteFileFromGroup(String _id, String file_uuid){
+        Groups group = groupsRepository.findBy_id(_id);
+
+        List<filesArray> files = group.getFilesArray();
+        int count =1;
+        for(filesArray f : files){
+            count ++;
+            if(f.getFile_uuid().toString().equals(file_uuid)){
+                break;
+            }
+        }
+        files.remove(count-2);
+        group.setFilesArray(files);
+
+        Groups savedgroup = groupsRepository.save(group);
+        return "deleted";
+    }
+
+    public String addMembers(String _id, String user_uuid, String name){
+        Groups g = groupsRepository.findBy_id(_id);
+        List<MembersArray> mem = g.getMembersArray();
+        MembersArray member  = new MembersArray();
+        member.setMember_name(name);
+        member.setMember_uuid(user_uuid);
+
+        mem.add(member);
+
+        g.setMembersArray(mem);
+        Groups group = groupsRepository.save(g);
+
+        return "added";
+    }
+
+    public String deleteMember(String user_uuid, String _id){
+        Groups g = groupsRepository.findBy_id(_id);
+
+        List<MembersArray> mem = g.getMembersArray();
+        int count =1;
+        for(MembersArray member : mem){
+            count ++;
+            if(member.getMember_uuid().equals(user_uuid)){
+                break;
+            }
+        }
+        mem.remove(count-2);
+        g.setMembersArray(mem);
+        Groups group = groupsRepository.save(g);
+
+        return "deleted";
+    }
 }

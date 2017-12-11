@@ -28,7 +28,7 @@ class FilesInDir extends Component{
             "user_uuid": this.state.user_uuid,
             "file_uuid": fileListInDir.file_uuid,
             "file_name": fileListInDir.file_name,
-            "_id": file._id,
+            "_id": file._id
         }
         this.callDeleteFileInDirAPI(payload);
     }

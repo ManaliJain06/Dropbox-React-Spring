@@ -60,7 +60,8 @@ public class FilesService {
             filesArrayList.add(fileArray);
 
             UUID u = null;
-            String[] userId = {user_uuid};
+            List<String> userId = new ArrayList<>();
+            userId.add(user_uuid);
             Files fileObject = new Files();
             fileObject.setUser_uuid(userId);
             fileObject.setDir_name("");
@@ -85,7 +86,8 @@ public class FilesService {
         List<filesArray> filesArrayList = new ArrayList<>();
 
         String str = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss").format(new Date());
-        String[] userId = {user_uuid};
+        List<String> userId = new ArrayList<>();
+        userId.add(user_uuid);
         Files fileObject = new Files();
         fileObject.setUser_uuid(userId);
         fileObject.setDir_uuid(UUID.randomUUID());
@@ -143,5 +145,40 @@ public class FilesService {
         filesRepository.deleteBy_id(_id);
 //        System.out.println("msg is" + msg);
         return "delete";
+    }
+
+    public String shareFileOrDirectory(String _id, String user_uuid){
+        Files f = filesRepository.findBy_id(_id);
+        List<String> userId = f.getUser_uuid();
+        userId.add(user_uuid);
+
+        Files savedFile = filesRepository.save(f);
+        return "shared";
+
+    }
+
+    public String StarFilesOrDir(String _id){
+        Files f = filesRepository.findBy_id(_id);
+        f.setStar_id("1");
+        Files savedFile = filesRepository.save(f);
+        return "starred";
+    }
+
+    public String deleteFileFromDir(String _id, String file_uuid){
+        Files file = filesRepository.findBy_id(_id);
+
+        int count =1;
+        List<filesArray> files = file.getFilesArray();
+        for(filesArray f : files){
+            count ++;
+            if(f.getFile_uuid().toString().equals(file_uuid)){
+                break;
+            }
+        }
+        files.remove(count-2);
+        file.setFilesArray(files);
+
+        Files savedFile = filesRepository.save(file);
+        return "deleted";
     }
 }

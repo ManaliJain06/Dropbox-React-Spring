@@ -196,7 +196,7 @@ class GroupList extends Component{
         const group =  this.props.group;
         let payload = new FormData();
         payload.append('file', event.target.files[0]);
-        payload.append('user_uuid', loginData.user_uuid);
+        payload.append('user_uuid', this.state.user_uuid);
         payload.append('_id', group._id)
 
         // api.uploadFileGroup(payload)
@@ -227,25 +227,25 @@ class GroupList extends Component{
                 console.log("error");
             })
     };
-    callUploadInGroupAPI = () => {
-        api.uploadInGroup(this.state)
-            .then((res) => {
-                if (res.data.statusCode === 201) {
-                    this.props.callGroup('group');
-                } else if (res.data.statusCode === 500) {
-                    this.setState({
-                        message: res.data.message
-                    });
-                } else if (res.data.statusCode === 601  || res.data.statusCode === 600) {
-                    alert("Token expired or invalid. Please login again");
-                    this.setState({
-                        message: res.data.message
-                    });
-                    sessionStorage.removeItem("jwtToken");
-                    this.props.loginState(false);
-                }
-            });
-    }
+    // callUploadInGroupAPI = () => {
+    //     api.uploadInGroup(this.state)
+    //         .then((res) => {
+    //             if (res.data.statusCode === 201) {
+    //                 this.props.callGroup('group');
+    //             } else if (res.data.statusCode === 500) {
+    //                 this.setState({
+    //                     message: res.data.message
+    //                 });
+    //             } else if (res.data.statusCode === 601  || res.data.statusCode === 600) {
+    //                 alert("Token expired or invalid. Please login again");
+    //                 this.setState({
+    //                     message: res.data.message
+    //                 });
+    //                 sessionStorage.removeItem("jwtToken");
+    //                 this.props.loginState(false);
+    //             }
+    //         });
+    // }
     myCallbackForDeleteFileGroup = (callFileList) =>{
         console.log("inside this hti thsi");
         this.props.callGroup('group');

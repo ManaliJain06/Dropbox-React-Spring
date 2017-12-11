@@ -8,11 +8,9 @@ const axios = require("axios");
 
 
 export const starItem = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/star', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    return axios.post('http://localhost:8080/files/starFileOrDir', payload
     )
         .then(function (response) {
             console.log("cookie: ",document.cookie);
@@ -58,11 +56,9 @@ export const deleteDir = (payload) => {
 };
 
 export const deleteFileInDir = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/deleteFileInDir', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    return axios.post('http://localhost:8080/files/deleteFileFromDir', payload
     )
         .then(function (response) {
             console.log("cookie: ",document.cookie);
@@ -76,11 +72,9 @@ export const deleteFileInDir = (payload) => {
 };
 
 export const shareFile = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/shareFile', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    return axios.post('http://localhost:8080/files/shareFileOrDir', payload
     )
         .then(function (response) {
             console.log("cookie: ",document.cookie);
@@ -94,11 +88,9 @@ export const shareFile = (payload) => {
 };
 
 export const shareDir = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/shareDir', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    return axios.post('http://localhost:8080/files/shareFileOrDir', payload
     )
         .then(function (response) {
             console.log("cookie: ",document.cookie);
@@ -111,20 +103,18 @@ export const shareDir = (payload) => {
         });
 };
 
-export const shareLink = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/shareLink', payload, {
-            headers: { 'authorization': token }
-        }
-    )
-        .then(function (response) {
-            console.log("cookie: ",document.cookie);
-            console.log(response);
-            return response
-        })
-        .catch(function (error) {
-            console.log(error);
-            return error
-        });
-};
+// export const shareLink = (payload) => {
+//     // const token = sessionStorage.jwtToken;
+//     // console.log("token",token);
+//     return axios.post('http://localhost:8080/files/shareLink', payload
+//     )
+//         .then(function (response) {
+//             console.log("cookie: ",document.cookie);
+//             console.log(response);
+//             return response
+//         })
+//         .catch(function (error) {
+//             console.log(error);
+//             return error
+//         });
+// };

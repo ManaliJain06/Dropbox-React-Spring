@@ -38,7 +38,7 @@ class Home extends Component{
                         // message: res.data.message,
                         files: res.data
                     });
-                    this.props.userFiles(res.data.files);
+                    this.props.userFiles(res.data);
                 } else if (res.data.statusCode === 500) {
                     this.setState({
                         message: res.data.message

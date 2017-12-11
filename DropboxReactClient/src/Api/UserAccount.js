@@ -37,11 +37,10 @@ export const saveAbout = (payload) => {
         });
 };
 
-export const getLinks = () => {
-    const token = sessionStorage.jwtToken;
-    return axios.get('http://localhost:3003/getLinks', {
-            headers: { 'authorization': token }
-        }
+export const getLinks = (payload) => {
+    // const token = sessionStorage.jwtToken;
+    let user_uuid = payload.user_uuid;
+    return axios.get(`http://localhost:8080/files/getLinks/${user_uuid}`
     )
         .then(function (response) {
             console.log(response);

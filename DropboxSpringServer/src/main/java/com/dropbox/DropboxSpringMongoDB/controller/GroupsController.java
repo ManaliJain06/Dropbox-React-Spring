@@ -1,9 +1,9 @@
 package com.dropbox.DropboxSpringMongoDB.controller;
 
-import com.dropbox.DropboxSpringMongoDB.document.Files;
 import com.dropbox.DropboxSpringMongoDB.document.Groups;
-import com.dropbox.DropboxSpringMongoDB.service.FilesService;
+import com.dropbox.DropboxSpringMongoDB.document.User;
 import com.dropbox.DropboxSpringMongoDB.service.GroupsService;
+import com.dropbox.DropboxSpringMongoDB.service.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +21,13 @@ import java.util.List;
 public class GroupsController {
 
     private GroupsService groupsService;
+    private UserService userService;
 
     @Autowired
-    GroupsController(GroupsService groupsService){
+    GroupsController(GroupsService groupsService, UserService userService){
+
         this.groupsService = groupsService;
+        this.userService = userService;
     }
 
     @GetMapping(path="/getGroups/{user_uuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -82,5 +85,56 @@ public class GroupsController {
         response.put("message",msg);
         response.put("statusCode",201);
         return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+    }
+
+    @PostMapping(path="/deleteFileFromGroup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> deleteFileFromGroup(@RequestBody String payload){
+        JSONObject json = new JSONObject(payload);
+        JSONObject response = new JSONObject();
+        String msg = groupsService.deleteFileFromGroup(json.getString("_id"),
+                json.getString("file_uuid"));
+        if(msg.equals("deleted")){
+            response.put("statusCode",201);
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        } else{
+            response.put("statusCode",400);
+            response.put("message", "Error Occured");
+            return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(path="/addMember", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> addMember(@RequestBody String payload){
+        JSONObject json = new JSONObject(payload);
+        JSONObject response = new JSONObject();
+        User user = userService.checkUser(json.getString("addToEmail"));
+        if(user == null){
+            response.put("statusCode",300);
+            response.put("message", "User is not available in Dropbox");
+            return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
+        }
+        else {
+            String name = user.getFirstName()+ " " + user.getLastName();
+            String msg = groupsService.addMembers(json.getString("_id"),
+                    user.getUser_uuid().toString(), name);
+            response.put("statusCode",201);
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        }
+    }
+    @PostMapping(path="/deleteMember", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> deleteMember(@RequestBody String payload){
+        JSONObject json = new JSONObject(payload);
+        JSONObject response = new JSONObject();
+        String msg = groupsService.deleteMember(json.getString("delete_uuid"),
+                json.getString("_id"));
+        if(msg.equals("deleted")){
+            response.put("statusCode",201);
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        }
+        else {
+            response.put("statusCode",400);
+            response.put("message", "Delete Member Failed");
+            return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
