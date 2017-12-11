@@ -26,14 +26,12 @@ export const starItem = (payload) => {
 };
 
 export const deleteFile = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/deleteFile', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    return axios.post('http://localhost:8080/files/deleteFileAndDir/', payload
     )
         .then(function (response) {
-            console.log("cookie: ",document.cookie);
+            // console.log("cookie: ",document.cookie);
             console.log(response);
             return response
         })
@@ -44,14 +42,12 @@ export const deleteFile = (payload) => {
 };
 
 export const deleteDir = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/deleteDir', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    return axios.post('http://localhost:8080/files/deleteFileAndDir/', payload
     )
         .then(function (response) {
-            console.log("cookie: ",document.cookie);
+            // console.log("cookie: ",document.cookie);
             console.log(response);
             return response
         })

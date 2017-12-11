@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 import FilesInGroup from './FilesInGroup';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
+const axios = require("axios");
 
 const customStyles = {
     content : {
@@ -192,25 +193,39 @@ class GroupList extends Component{
     }
 
     uploadFileInGroup = (event) => {
-        const payload = new FormData();
+        const group =  this.props.group;
+        let payload = new FormData();
         payload.append('file', event.target.files[0]);
         payload.append('user_uuid', loginData.user_uuid);
+        payload.append('_id', group._id)
 
-        api.uploadFileGroup(payload)
+        // api.uploadFileGroup(payload)
+        //     .then((res) => {
+        //         if (res.status === 201) {
+        //             const group =  this.props.group;
+        //             this.setState({
+        //                 ...this.state,
+        //                 "file_uuid": res.data.file_uuid,
+        //                 "group_name": group.group_name,
+        //                 "group_uuid": group.group_uuid,
+        //                 "_id": group._id
+        //             }, this.callUploadInGroupAPI);
+        //         } else {
+        //             alert("Error in file upload");
+        //         }
+        //     });
+
+        return axios.post('http://localhost:8080/groups/uploadFileInGroup', payload)
             .then((res) => {
-                if (res.status === 201) {
-                    const group =  this.props.group;
-                    this.setState({
-                        ...this.state,
-                        "file_uuid": res.data.file_uuid,
-                        "group_name": group.group_name,
-                        "group_uuid": group.group_uuid,
-                        "_id": group._id
-                    }, this.callUploadInGroupAPI);
-                } else {
-                    alert("Error in file upload");
+                if (res.data.statusCode === 201) {
+                    this.props.callGroup('group');
+                } else if(res.data.statusCode === 400){
+                    alert("Error in file upload"+ res.data.message);
                 }
-            });
+            })
+            .catch((error) => {
+                console.log("error");
+            })
     };
     callUploadInGroupAPI = () => {
         api.uploadInGroup(this.state)

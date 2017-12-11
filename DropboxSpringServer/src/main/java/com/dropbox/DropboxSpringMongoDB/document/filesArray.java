@@ -9,6 +9,15 @@ public class filesArray {
     private String file_name;
     private String file_type;
     private String file_path;
+    private String owner_uuid;
+
+    public String getOwner_uuid() {
+        return owner_uuid;
+    }
+
+    public void setOwner_uuid(String owner_uuid) {
+        this.owner_uuid = owner_uuid;
+    }
 
     public UUID getFile_uuid() {
         return file_uuid;

@@ -25,7 +25,7 @@ class Groups extends Component{
     constructor(props) {
         super(props);
         let loginData = this.props.loginDataProp;
-        let name = loginData.firstname + " " + loginData.lastname;
+        let name = loginData.firstName + " " + loginData.lastName;
         this.state = {
             "user_uuid" : loginData.user_uuid,
             "user_name" : name,
@@ -93,13 +93,13 @@ class Groups extends Component{
     };
 
     componentDidMount() {
-        API.getGroups()
+        API.getGroups(this.state)
             .then((res) => {
             console.log("res of component did mount is",res);
-                if (res.data.statusCode === 201) {
+                if (res.status === 200) {
                     this.setState({
                         message: res.data.message,
-                        group: res.data.group
+                        group: res.data
                     });
                     // this.props.userFiles(res.data.files);
                 } else if (res.data.statusCode === 500) {

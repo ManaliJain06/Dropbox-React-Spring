@@ -197,7 +197,7 @@ class FilesList extends Component{
         payload.append('user_uuid', this.state.user_uuid);
         payload.append('dir_name', file.dir_name);
         payload.append('dir_uuid', file.dir_uuid);
-        // payload.append('_id', file._id);
+        payload.append('_id', file._id);
         payload.forEach(function(d){
             console.log(d)
         })
@@ -218,9 +218,9 @@ class FilesList extends Component{
         //     });
         return axios.post('http://localhost:8080/files/uploadFileInDir', payload)
             .then((res) => {
-                if (res.status === 201) {
-                    // this.props.callHome('home');
-                } else if(res.status === 400){
+                if (res.data.statusCode === 201) {
+                    this.props.callHome('home');
+                } else if(res.data.statusCode === 400){
                     alert("Error in file upload"+ res.data.message);
                 }
             })

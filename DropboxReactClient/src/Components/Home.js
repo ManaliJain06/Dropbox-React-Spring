@@ -32,11 +32,11 @@ class Home extends Component{
         let loginData = this.props.loginDataProp;
         API.getFiles(loginData.user_uuid)
             .then((res) => {
-                if (res.data.statusCode === 201) {
+                if (res.status === 200) {
                     console.log("files are", res);
                     this.setState({
-                        message: res.data.message,
-                        files: res.data.files
+                        // message: res.data.message,
+                        files: res.data
                     });
                     this.props.userFiles(res.data.files);
                 } else if (res.data.statusCode === 500) {

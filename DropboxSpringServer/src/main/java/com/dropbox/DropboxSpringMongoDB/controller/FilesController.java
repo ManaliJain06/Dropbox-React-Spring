@@ -27,16 +27,15 @@ public class FilesController {
     }
 
     @GetMapping(path="/getFiles/{user_uuid}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> getFiles(@PathVariable String user_uuid){
+    public ResponseEntity<?> getFiles(@PathVariable String user_uuid){
         System.out.println("user_uuid is " + user_uuid);
         JSONObject response = new JSONObject();
-        String user[] = {user_uuid};
         List<Files> files= filesService.getFiles(user_uuid);
-        response.put("message","Valid user");
-        response.put("statusCode",201);
-        response.put("isLogged", true);
-        response.put("files", files);
-        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+//        response.put("message","Valid user");
+//        response.put("statusCode",201);
+//        response.put("isLogged", true);
+//        response.put("files", files);
+        return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
     @PostMapping(path="/uploadFile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -82,11 +81,11 @@ public class FilesController {
     }
 
     @PostMapping(path="/uploadFileInDir" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> uploadFileInDir(@RequestParam("dir_uuid") String dir_uuid,
+    public ResponseEntity<String> uploadFileInDir(@RequestParam("_id") String _id,
                                                   @RequestParam("file") MultipartFile file){
-        System.out.println("_id is "+dir_uuid);
+        System.out.println("_id is "+_id);
         JSONObject response = new JSONObject();
-        String msg = filesService.uploadFileInDir(dir_uuid,file);
+        String msg = filesService.uploadFileInDir(_id,file);
         if(msg.equals("success")){
             response.put("statusCode",201);
             return new ResponseEntity<>(response.toString(), HttpStatus.OK);
@@ -96,4 +95,18 @@ public class FilesController {
             return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping(path="/deleteFileAndDir", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<String> deleteFileOrDir(@RequestBody String payload){
+        JSONObject json = new JSONObject(payload);
+        System.out.println("_id is  sss " + json.getString("_id"));
+        String msg = filesService.deleteFileOrDirectory(json.getString("_id"));
+        JSONObject response = new JSONObject();
+        response.put("message",msg);
+        response.put("statusCode",201);
+        response.put("isLogged", true);
+        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+
+    }
+
 }

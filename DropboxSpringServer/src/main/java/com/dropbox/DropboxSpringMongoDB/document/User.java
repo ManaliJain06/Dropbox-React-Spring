@@ -1,6 +1,7 @@
 package com.dropbox.DropboxSpringMongoDB.document;
 
 import com.mongodb.util.JSON;
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,13 +16,13 @@ public class User {
     private String email;
     private String password;
     private UUID user_uuid;
-    private JSON overview;
-    private JSON interest;
+    private JSONObject overview;
+    private JSONObject interest;
 
     @Override
     public String toString() {
-        return getFirstName() + " "+ getLastName() + " "+ getEmail() + " "+ getPassword() + " "+
-                getUser_uuid() + " "+ getOverview() + " "+ getInterest();
+        return getFirstName() + " " + getLastName() + " " + getEmail() + " " + getPassword() + " " +
+                getUser_uuid() + " " + getOverview() + " " + getInterest();
     }
 
     public String getFirstName() {
@@ -72,19 +73,19 @@ public class User {
         this.user_uuid = user_uuid;
     }
 
-    public JSON getOverview() {
+    public JSONObject getOverview() {
         return overview;
     }
 
-    public void setOverview(JSON overview) {
+    public void setOverview(JSONObject overview) {
         this.overview = overview;
     }
 
-    public JSON getInterest() {
+    public JSONObject getInterest() {
         return interest;
     }
 
-    public void setInterest(JSON interest) {
+    public void setInterest(JSONObject interest) {
         this.interest = interest;
     }
 }

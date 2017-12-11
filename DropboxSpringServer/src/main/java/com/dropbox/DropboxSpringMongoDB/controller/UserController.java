@@ -52,13 +52,13 @@ public class UserController {
             response.put("statusCode",201);
 
             System.out.println("Saved");
+            return new ResponseEntity<>(response.toString(), HttpStatus.ACCEPTED);
         } else {
             System.out.println("user found  is" + userFound.toString());
             response.put("message","UserName already exists");
             response.put("statusCode",401);
+            return new ResponseEntity<>(response.toString(), HttpStatus.UNAUTHORIZED);
         }
-
-        return new ResponseEntity<>(response.toString(), HttpStatus.ACCEPTED);
     }
 
     @PostMapping(path="/login",consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json")
@@ -76,17 +76,58 @@ public class UserController {
                 response.put("statusCode",201);
                 response.put("isLogged", true);
                 response.put("payload", jsonObject);
+                return new ResponseEntity<>(response.toString(), HttpStatus.OK);
             } else {
                 response.put("message","Invalid password");
                 response.put("statusCode",400);
                 response.put("isLogged", false);
+                return new ResponseEntity<>(response.toString(), HttpStatus.UNAUTHORIZED);
             }
         } else{
             response.put("message","Invalid Username");
             response.put("statusCode",400);
             response.put("isLogged", false);
+            return new ResponseEntity<>(response.toString(), HttpStatus.UNAUTHORIZED);
         }
-
-        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     }
+
+    @PostMapping(path="/about", consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json")
+    public ResponseEntity<String> postAboutUser (@RequestBody String payload){
+        JSONObject response = new JSONObject(payload);
+
+//        "{work: response.getString("work"),education: response.getString("education"),
+//                "education": req.education,
+//                "phone": req.phone,
+//                "events": req.events
+//        String request = "{music : req.music,\n" +
+//                "        \"sports\" : req.sports,\n" +
+//                "        \"shows\" : req.shows,}";
+        String res = userService.updateAboutUser(response);
+        if(res.equals("updated")){
+            response.put("message","Saved Successfully");
+            response.put("statusCode",201);
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        } else{
+            response.put("message","Error Occurred");
+            response.put("statusCode",400);
+            return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(path="/interest", consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json")
+    public ResponseEntity<String> postInterest (@RequestBody String payload){
+        JSONObject response = new JSONObject(payload);
+
+        String res = userService.updateInterest(response);
+        if(res.equals("updated")){
+            response.put("message","Saved Successfully");
+            response.put("statusCode",201);
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        } else{
+            response.put("message","Error Occurred");
+            response.put("statusCode",400);
+            return new ResponseEntity<>(response.toString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

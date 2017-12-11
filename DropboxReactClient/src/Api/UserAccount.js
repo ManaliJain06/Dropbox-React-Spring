@@ -7,11 +7,9 @@ const axios = require("axios");
 
 
 export const saveInterest = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/postUserInterest', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    return axios.post('http://localhost:8080/user/interest', payload
     )
         .then(function (response) {
             console.log("cookie: ",document.cookie);
@@ -25,11 +23,9 @@ export const saveInterest = (payload) => {
 };
 
 export const saveAbout = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("payload", payload)
-    return axios.post('http://localhost:3003/postUserAbout', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("payload", payload)
+    return axios.post('http://localhost:8080/user/about', payload
     )
         .then(function (response) {
             console.log(response);

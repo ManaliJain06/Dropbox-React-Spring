@@ -12,11 +12,11 @@ class About extends Component{
         super(props);
         let loginData = this.props.loginDataProp;
         console.log("login data after retrieval is",loginData);
-        let overview = '';
-        if(loginData.overview !== null || loginData.overview !== undefined)
-        {
-            overview = JSON.parse(loginData.overview);
-        }
+        let overview = loginData.overview;
+        // if(loginData.overview !== null && loginData.overview !== undefined)
+        // {
+        //     overview = JSON.parse(loginData.overview);
+        // }
         this.state = {
             "work": (overview)? overview.work : '',
             "education":(overview)? overview.education : '',
@@ -34,7 +34,8 @@ class About extends Component{
                 ...this.state,
                 "_id": loginData._id,
                 "id": loginData.id,
-                "uuid": loginData.uuid
+                "uuid": loginData.uuid,
+                "email": loginData.email
             }, this.callAPI);
         } else {
             this.setState({
@@ -84,7 +85,7 @@ class About extends Component{
 
     render() {
         let loginData = this.props.loginDataProp;
-        let name = loginData.firstname  + " " + loginData.lastname;
+        let name = loginData.firstName  + " " + loginData.lastName;
         let messagediv =null;
         if(this.state.message !== ''){
             messagediv = <div className="clearfix">

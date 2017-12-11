@@ -4,11 +4,9 @@
 const axios = require("axios");
 
 export const createGroup = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/createGroup', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    return axios.post('http://localhost:8080/groups/createGroup', payload
     )
         .then(function (response) {
             console.log("cookie: ",document.cookie);
@@ -22,11 +20,10 @@ export const createGroup = (payload) => {
 };
 
 export const getGroups = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token",token);
-    return axios.post('http://localhost:3003/getGroup', payload, {
-            headers: { 'authorization': token }
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token",token);
+    let user_uuid = payload.user_uuid;
+    return axios.get(`http://localhost:8080/groups/getGroups/${user_uuid}`
     )
         .then(function (response) {
             console.log("cookie: ",document.cookie);
@@ -94,11 +91,9 @@ export const deleteFileFromGroup = (payload) => {
 };
 
 export const deleteGroup = (payload) => {
-    const token = sessionStorage.jwtToken;
-    console.log("token", token);
-    return axios.post('http://localhost:3003/deleteGroup', payload, {
-            headers: {'authorization': token}
-        }
+    // const token = sessionStorage.jwtToken;
+    // console.log("token", token);
+    return axios.post('http://localhost:8080/groups/deleteGroup', payload
     )
         .then(function (response) {
             console.log("cookie: ", document.cookie);

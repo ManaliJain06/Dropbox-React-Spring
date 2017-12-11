@@ -32,6 +32,10 @@ public interface FilesRepository extends MongoRepository<Files, String>{
 
     Files save(Files file);
 
+    Files findBy_id(String _id);
+
+    void deleteBy_id(String _id);
+
 
 
 }

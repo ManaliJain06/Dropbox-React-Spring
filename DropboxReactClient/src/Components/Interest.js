@@ -12,11 +12,11 @@ class Interest extends Component{
         super(props);
         let loginData = this.props.loginDataProp;
         console.log("login data after retrieval is",loginData);
-        let interest = '';
-        if(loginData.interest !== null || loginData.interest !== undefined)
-        {
-            interest = JSON.parse(loginData.interest);
-        }
+        let interest = loginData.interest;
+        // if(loginData.interest !== null && loginData.interest !== undefined)
+        // {
+        //     interest = JSON.parse(loginData.interest);
+        // }
         this.state = {
             "music": (interest)? interest.music : '',
             "sports":(interest)? interest.sports : '',
@@ -32,7 +32,8 @@ class Interest extends Component{
                 ...this.state,
                 "_id": loginData._id,
                 "id": loginData.id,
-                "user_uuid": loginData.user_uuid
+                "user_uuid": loginData.user_uuid,
+                "email": loginData.email
             }, this.callAPI);
         } else {
             this.setState({
