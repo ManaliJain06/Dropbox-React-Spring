@@ -8,7 +8,7 @@ This repository contains a REACT server for front end and Spring server for REST
 DROPBOX
 How do I get set up?
 Client setup- 
-1) Client module is DropboxReactServer 
+1) Client module is DropboxReactClient
 2) Resolve dependencies in package.json 
 3) Launch the application by - npm start 
 4) Client port is 3000 
